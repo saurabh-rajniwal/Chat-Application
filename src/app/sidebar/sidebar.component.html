@@ -1,0 +1,12 @@
+<aside class="sidebar">
+    <p class="sidebar__heading">Chat with</p>
+    <div class="sidebar__list">
+        <div matRipple *ngFor="let user of users" (click)="selectUser(user.username)" class="sidebar__list-item"
+            [class.sidebar__list-item--active]="chatOpenWith === user.username">
+            {{ user.username }}
+            <i *ngIf=" user.username===currentUser.username">
+                (self)
+            </i>
+        </div>
+    </div>
+</aside>

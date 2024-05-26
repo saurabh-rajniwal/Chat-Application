@@ -1,0 +1,7 @@
+<mat-toolbar color="primary" class="navbar">
+  <span>Quick Chat</span>
+  <span>
+    <button mat-button (click)="logout()" *ngIf="isUserLoggedIn()">Logout</button>
+  </span>
+</mat-toolbar>
+<router-outlet />

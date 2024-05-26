@@ -1,0 +1,36 @@
+<div class="chat-box">
+    <div *ngIf="noUsernameProvided" class="chat-box__no-username-message">
+        Please select a user from the sidebar to start a conversation.
+    </div>
+    <div *ngIf="!noUsernameProvided && chatRoomId" class="chat-box__container">
+        <div class="chat-box__messages">
+            <div *ngFor="let message of messages"
+                [class.chat-box__message--self]="message.senderUsername === currentUsername" class="chat-box__message">
+                <div class="chat-box__message-actions"
+                    [class.chat-box__message-actions--self]="message.senderUsername === currentUsername">
+                    <button (click)="deleteMessage(message.id)" mat-fab color="primary">
+                        <mat-icon class="chat-box__message-actions-icon">delete</mat-icon>
+                    </button>
+
+                    <button (click)="editMessageInit(message)" mat-fab color="primary">
+                        <mat-icon class="chat-box__message-actions-icon">edit</mat-icon>
+                    </button>
+                    <!-- 
+                    <button (click)="reactionMessage(message)" mat-fab color="primary">
+                        <mat-icon class="chat-box__message-actions-icon">thumb_up</mat-icon>
+                    </button> -->
+
+                </div>
+                <div class="chat-box__message-content">{{ message.content }}</div>
+            </div>
+        </div>
+        <div class="chat-box__input">
+            <input autofocus [(ngModel)]="newMessage" (keyup.enter)="sendMessage()" placeholder="Type a message..."
+                class="chat-box__input-field" />
+            <button mat-flat-button color="primary" (click)="sendMessage()" class="chat-box__input-button">{{ isEditing
+                ?
+                'Update' : 'Send'
+                }}</button>
+        </div>
+    </div>
+</div>
