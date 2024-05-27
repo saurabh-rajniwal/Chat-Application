@@ -14,7 +14,7 @@ Real Time Chat application using Angular and Firebase.
 # Usage
 
 - I have intentionally left my firebase config inside `dev.environment.ts` file, to let you use my firebase account.
-- If you prefer to use your own account, please change the `firebaseConfig` object in `app.config.ts` file.
+- If you prefer to use your own account, please change the `firebaseConfig` object in `dev.environment.ts` file.
 - Also, note that you have to create an index on `timestamp` key of message, otherwise you will get an error. Opening the link in the URL will automatically create the index.
 
 ## How to run
