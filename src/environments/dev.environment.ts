@@ -1,8 +1,13 @@
 export const firebaseConfig = {
-  apiKey: 'AIzaSyAoJBrvvmRxRohVAxasdqKrkKWdOIAjJhY',
-    authDomain: 'chatapp-cdac2.firebaseapp.com',
-    projectId: 'chatapp-cdac2',
-    storageBucket: 'chatapp-cdac2.appspot.com',
-    messagingSenderId: '802776778349',
-    appId: '1:802776778349:web:25486af8e885225891a164',
+  apiKey: 'AIzaSyDUwOUrEAlzMjV_78PTASrhKz5VmJQe9os',
+
+  authDomain: 'chatapplication-508f9.firebaseapp.com',
+
+  projectId: 'chatapplication-508f9',
+
+  storageBucket: 'chatapplication-508f9.appspot.com',
+
+  messagingSenderId: '177629337479',
+
+  appId: '1:177629337479:web:6d8586810c00890ae86522',
 };

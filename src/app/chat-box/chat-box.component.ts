@@ -11,12 +11,17 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-chat-box',
   standalone: true,
-  imports: [MatInputModule, CommonModule, MatButtonModule, FormsModule, MatIconModule],
+  imports: [
+    MatInputModule,
+    CommonModule,
+    MatButtonModule,
+    FormsModule,
+    MatIconModule,
+  ],
   templateUrl: './chat-box.component.html',
-  styleUrls: ['./chat-box.component.scss']
+  styleUrls: ['./chat-box.component.scss'],
 })
 export class ChatBoxComponent implements OnInit, OnDestroy {
-
   private chatService = inject(ChatService);
   private userService = inject(UserService);
   private route = inject(ActivatedRoute);
@@ -32,7 +37,7 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
   editMessageId: string | null = null;
 
   async ngOnInit() {
-    this.route.paramMap.subscribe(async params => {
+    this.route.paramMap.subscribe(async (params) => {
       this.selectedUsername = params.get('username');
 
       if (!this.selectedUsername) {
@@ -40,9 +45,10 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
         return;
       }
 
-      const isUsernameExists = await this.userService.checkUsernameExists(this.selectedUsername);
+      const isUsernameExists = await this.userService.checkUsernameExists(
+        this.selectedUsername,
+      );
       const currentUser = await this.userService.getCurrentUser();
-
 
       if (!isUsernameExists || !currentUser) {
         console.error('Username does not exist or user is not authenticated');
@@ -50,8 +56,9 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
       }
 
       this.currentUserId = currentUser.uid;
-      // console.log(this.currentUserId, "currentUserId");
-      this.currentUsername = (await this.userService.getUserDetails(this.currentUserId))?.['username'];
+      this.currentUsername = (
+        await this.userService.getUserDetails(this.currentUserId)
+      )?.['username'];
 
       if (!this.currentUsername) {
         console.error('Username does not exist or user is not authenticated');
@@ -60,8 +67,10 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
 
       this.cleanupPreviousChat();
 
-
-      this.chatRoomId = await this.chatService.getChatRoom(this.currentUsername, this.selectedUsername);
+      this.chatRoomId = await this.chatService.getChatRoom(
+        this.currentUsername,
+        this.selectedUsername,
+      );
       this.noUsernameProvided = false;
 
       this.loadMessages();
@@ -79,14 +88,13 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
           this.messages.push(message);
           this.messages.sort((a, b) => a.timestamp - b.timestamp);
         } else if (message.type === 'removed') {
-          this.messages = this.messages.filter(msg => msg.id !== message.id);
+          this.messages = this.messages.filter((msg) => msg.id !== message.id);
         } else if (message.type === 'modified') {
-          const index = this.messages.findIndex(msg => msg.id === message.id);
+          const index = this.messages.findIndex((msg) => msg.id === message.id);
           if (index !== -1) {
             this.messages[index] = message;
           }
         }
-
       });
     }
   }
@@ -94,14 +102,21 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
   async sendMessage() {
     // console.log(this.chatRoomId, this.currentUsername, this.newMessage.trim());
     if (this.newMessage.trim() && this.chatRoomId && this.currentUsername) {
-
       if (this.editMessageId) {
-        await this.chatService.editMessage(this.chatRoomId, this.editMessageId, this.newMessage.trim());
+        await this.chatService.editMessage(
+          this.chatRoomId,
+          this.editMessageId,
+          this.newMessage.trim(),
+        );
         this.editMessageId = null;
         this.isEditing = false;
         this.newMessage = '';
       } else {
-        await this.chatService.sendMessage(this.chatRoomId, this.currentUsername, this.newMessage.trim());
+        await this.chatService.sendMessage(
+          this.chatRoomId,
+          this.currentUsername,
+          this.newMessage.trim(),
+        );
         this.newMessage = '';
       }
     }
@@ -110,7 +125,9 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
   async deleteMessage(messageId: string) {
     if (this.chatRoomId) {
       await this.chatService.deleteMessage(this.chatRoomId, messageId);
-      this.messages = this.messages.filter(message => message.id !== messageId);
+      this.messages = this.messages.filter(
+        (message) => message.id !== messageId,
+      );
     }
   }
 
@@ -122,7 +139,11 @@ export class ChatBoxComponent implements OnInit, OnDestroy {
 
   async reactionMessage(message: any) {
     if (this.chatRoomId) {
-      await this.chatService.reactionMessage(this.chatRoomId, message.id, message.reactions);
+      await this.chatService.reactionMessage(
+        this.chatRoomId,
+        message.id,
+        message.reactions,
+      );
     }
   }
 
